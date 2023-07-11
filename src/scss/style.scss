@@ -1,0 +1,108 @@
+@import url('./_set.scss');
+.container {
+  &__login {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__form {
+    width: 63rem;
+    // height: 50rem;
+    padding: 6rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7rem;
+    border-radius: 2rem;
+    background-color: #f0f0f0;
+    border: 1px solid #d1d1d1;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  }
+}
+.form {
+  &__title {
+    font-size: 5rem;
+  }
+  &__auth {
+    width: 100%;
+    max-width: 100% !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+  }
+  // &__input {
+  // }
+  &__checkbox {
+    .ant-form-item-control-input-content {
+      align-items: start;
+      justify-content: start;
+      span {
+        font-size: 2rem;
+      }
+      .ant-checkbox {
+      }
+    }
+
+    :where(
+        .css-dev-only-do-not-override-14wwjjs
+      ).ant-checkbox-wrapper.ant-checkbox-wrapper-in-form-item
+      input[type='checkbox'] {
+      width: 3rem;
+      height: 3rem;
+    }
+    :where(.css-dev-only-do-not-override-14wwjjs).ant-checkbox .ant-checkbox-inner {
+      width: 3rem;
+      height: 3rem;
+      &::after {
+        width: 1rem;
+        height: 2rem;
+      }
+    }
+  }
+}
+
+.ant-form-item {
+  // width: 30rem;
+}
+.form__input {
+  width: 24rem;
+  font-size: 2rem !important;
+}
+.ant-form-item {
+  margin-bottom: 0;
+  &-control-input-content {
+    display: flex;
+    justify-content: end;
+  }
+  &-required {
+    font-size: 2rem !important;
+  }
+  &-explain-error {
+    width: 24rem !important;
+    text-align: start;
+    margin-left: auto;
+  }
+}
+.ant-row {
+  align-items: center;
+  justify-content: space-between;
+}
+.link_container {
+  display: flex;
+  flex-direction: column;
+  font-size: 2rem;
+}
+.link {
+  font-size: 2rem;
+  color: #3c448b;
+  border-bottom: 1px solid #3c448b;
+}
+button[type='submit'] {
+  font-size: 2rem;
+  height: 4.4rem;
+}

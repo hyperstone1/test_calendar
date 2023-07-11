@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { host } from './constants/constants';
 
 function App() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [users, setUsers] = useState();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const { data } = await axios.get(`${host}/itemsTest`);
+      setUsers(data);
+      console.log(data);
+    };
+    fetchUsers();
+    localStorage.getItem('isAuth') ? setIsAuth(true) : setIsAuth(false);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home isAuth={isAuth} users={users} />} />
+      <Route path="/login" element={<Login isAuth={isAuth} setIsAuth={setIsAuth} />} />
+      <Route path="/register" element={<Register isAuth={isAuth} setIsAuth={setIsAuth} />} />
+    </Routes>
   );
 }
 

@@ -1,0 +1,236 @@
+@keyframes appearance {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.events {
+  position: relative;
+  height: 70rem;
+  width: 50rem;
+  padding: 3rem;
+  background-color: rgb(224 232 229);
+  border-radius: 1rem;
+  margin-bottom: 0;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  &-btn {
+    width: 1.5rem;
+    height: 1.5rem;
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &__main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    &_container {
+      overflow-y: auto;
+      max-height: 48rem;
+      min-height: 4rem;
+    }
+    &-title {
+      color: #47528f;
+      font-size: 3rem;
+      text-align: center;
+      animation: appearance 0.4s ease-in;
+    }
+  }
+  &__list {
+    // margin-top: 3rem;
+    padding-left: 2rem;
+    height: 100%;
+    max-height: 43rem;
+    &-none {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 1.8rem;
+    }
+    &-user {
+      pointer-events: none;
+      cursor: auto;
+    }
+    &-item {
+      position: relative;
+      padding: 1rem;
+      list-style-type: auto;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        color: #999999;
+      }
+    }
+    &-control {
+      position: absolute;
+      display: flex;
+      gap: 1.5rem;
+      right: 0;
+      top: 1rem;
+      color: #4e6983;
+      transition: opacity 0.4s ease-in-out;
+    }
+    &-del {
+      svg {
+        path {
+          fill: #4e6983;
+        }
+      }
+      &:hover {
+        svg {
+          path {
+            fill: rgba(177, 59, 59, 0.795);
+          }
+        }
+      }
+    }
+    &-edit {
+      svg {
+        color: #4e6983;
+      }
+      &:hover {
+        svg {
+          color: #376b51;
+        }
+      }
+    }
+  }
+  &__btns {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+    &-add,
+    &-close {
+      display: flex;
+      justify-content: center;
+      width: 13rem;
+      height: 4.4rem;
+      padding: 1rem 2rem;
+      font-size: 2rem;
+      background-color: #4e6983;
+
+      border-radius: 1rem;
+      color: #fff;
+      line-height: 1;
+      transition: all 0.3s ease;
+      text-align: center;
+      &:hover {
+        // color: #376b51;
+        background-color: #376b51;
+      }
+    }
+    &-close {
+      &:hover {
+        color: #fff;
+        background-color: rgba(177, 59, 59, 0.795);
+      }
+    }
+  }
+  .ant-picker {
+    border-radius: 1rem;
+    &-input {
+      width: 100%;
+      height: 100%;
+      padding: 0.4rem;
+      background-color: #fff;
+      font-size: 1.8rem;
+      border-radius: 1rem;
+      input {
+        font-size: 1.8rem;
+        &::placeholder {
+          color: rgba(0, 0, 0, 0.37);
+        }
+      }
+    }
+  }
+  &__new {
+    position: relative;
+    width: 100%;
+    height: 4.5rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    input {
+      font-size: 1.8rem;
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.37);
+      }
+    }
+    label {
+      display: inline-block;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    &-input {
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      padding-left: 1.7rem;
+      background-color: #fff;
+      border: 1px solid #e3e3e3;
+      font-size: 1.8rem;
+      border-radius: 1rem;
+    }
+  }
+}
+@keyframes appearance {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes disapp {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.223);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: appearance 0.4s ease-in-out;
+  opacity: 1;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  &__title {
+    margin-bottom: 2rem;
+    font-size: 3rem;
+    text-align: center;
+  }
+  &_container {
+    height: 40rem;
+    width: 40rem;
+    padding: 3rem;
+    border-radius: 2rem;
+    background-color: aliceblue;
+  }
+}
+.modal.disapp {
+  animation: disapp 0.4s ease-in-out;
+  opacity: 0;
+}
+.past {
+  color: #4e6983;
+  text-decoration: line-through;
+}
