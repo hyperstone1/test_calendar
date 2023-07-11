@@ -18,6 +18,7 @@
   justify-content: space-between;
   margin-bottom: 10px;
   font-size: 3rem;
+  color: #66729f;
 }
 
 .calendar__header button {
@@ -55,7 +56,8 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: 600;
+  color: #66729f;
 }
 
 .calendar__week-day {
@@ -82,7 +84,7 @@
   font-size: 2rem;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
-  background-color: #284c86;
+  background-color: #6f84a7;
   color: #fff;
   border: 1px solid rgb(255, 255, 255);
 
@@ -95,7 +97,7 @@
   width: fit-content;
 }
 .past-day {
-  background-color: #8d8d8d;
-  color: #000000;
+  background-color: #c8c9d1;
+  color: #6a6a6a;
   pointer-events: none;
 }
