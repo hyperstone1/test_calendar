@@ -14,7 +14,6 @@ const Login = ({ isAuth, setIsAuth }) => {
 
   useEffect(() => {
     if (isAuth) {
-      localStorage.setItem('isAuth', true);
       navigate('/');
     }
 
@@ -26,10 +25,12 @@ const Login = ({ isAuth, setIsAuth }) => {
     const userExist = users.find((user) => user.login === login && user.pass === pass);
     if (userExist) {
       setIsAuth(true);
+      localStorage.setItem('isAuth', true);
       localStorage.setItem('user', userExist.username);
       localStorage.setItem('login', login);
     } else {
       setIsAuth(false);
+      alert('Пользователя с таким логином и паролем не существует');
     }
   };
 
@@ -55,8 +56,6 @@ const Login = ({ isAuth, setIsAuth }) => {
           }}
           scrollToFirstError
         >
-          {/* <h2 className="form__title">Login</h2> */}
-
           <Form.Item
             name="login"
             label="Логин"

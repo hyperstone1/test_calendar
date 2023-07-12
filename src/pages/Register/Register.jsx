@@ -42,7 +42,7 @@ const Register = ({ setIsAuth }) => {
             label="Имя пользователя"
             rules={[
               {
-                type: 'username',
+                pattern: new RegExp('[a-zа-я0-9_-]{3,16}$'),
                 message: 'Введено неверное имя пользователя!',
               },
               {
@@ -62,6 +62,10 @@ const Register = ({ setIsAuth }) => {
             name="login"
             label="Логин"
             rules={[
+              {
+                pattern: new RegExp('[a-z0-9_-]{3,16}$'),
+                message: 'Пожалуйста, введите корректный логин',
+              },
               {
                 required: true,
                 message: 'Пожалуйста, введите ваш логин!',
