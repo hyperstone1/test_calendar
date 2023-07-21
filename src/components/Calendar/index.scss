@@ -5,7 +5,8 @@
   justify-content: center;
 }
 .calendar {
-  width: 70rem;
+  // width: 70rem;
+  width: 106rem;
   margin: 0 auto;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   padding: 3rem;
@@ -16,7 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
   font-size: 3rem;
   color: #66729f;
 }
@@ -48,21 +49,21 @@
   display: grid;
   gap: 1rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 0.5rem;
+  padding: 1rem;
 }
 
 .calendar__week {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
   font-weight: 600;
   color: #66729f;
 }
 
 .calendar__week-day {
-  width: calc(100% / 7);
-  padding: 5px;
+  width: 14rem;
+  padding: 0.5rem;
   text-align: center;
   font-size: 2.2rem;
 }
@@ -72,14 +73,34 @@
   flex-wrap: wrap;
   border-radius: 1rem;
   overflow: hidden;
+  &-events {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: start;
+    align-items: start;
+    font-size: 1.2rem;
+    color: whitesmoke;
+    max-height: 7rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &-event {
+    list-style-type: decimal;
+    b {
+      font-weight: 700;
+      text-decoration: underline;
+    }
+  }
 }
 
 .calendar__days-day {
   display: flex;
   flex-direction: column;
-  width: calc(100% / 7);
-  height: 10rem;
-  padding: 5px;
+  width: 14rem;
+  height: 12.5rem;
+  padding: 0.5rem;
   text-align: center;
   font-size: 2rem;
   transition: all 0.3s ease-in-out;
@@ -87,6 +108,7 @@
   background-color: #6f84a7;
   color: #fff;
   border: 1px solid rgb(255, 255, 255);
+  text-align: start;
 
   &:hover {
     background-color: #657896;

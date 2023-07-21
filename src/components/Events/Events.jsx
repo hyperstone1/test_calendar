@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
 import { host } from '../../constants/constants';
 import './index.scss';
 import moment from 'moment';
 import Modal from '../Modal/Modal';
+import useFetch from '../../hooks/useFetch';
 
-const Events = ({ selectedDay, userName, userLogin, users }) => {
+const Events = ({ allEvents, setAllEvents, selectedDay, userName, userLogin, users }) => {
   const [openModal, setOpenModal] = useState(false);
   const [newEvent, setNewEvent] = useState('');
   const [currentEvents, setCurrentEvents] = useState([]);
@@ -13,43 +13,28 @@ const Events = ({ selectedDay, userName, userLogin, users }) => {
   const [time, setTime] = useState('00:00:00');
   const [curEditEvent, setCurEditEvent] = useState('');
   const [hoverCurEvent, setHoverCurEvent] = useState('');
-  const [allEvents, setAllEvents] = useState([]);
   const [eventNow, setEventNow] = useState({});
-
-  // получение всех ивентов
-  useEffect(() => {
-    const fetchEvents = async () => {
-      await axios
-        .get(`${host}/news`)
-        .then((res) => {
-          const currentDayMonth = moment().format('DD MMM');
-          let time = new Date();
-          let timeString = time.toLocaleTimeString();
-          const newData = res.data.filter((item) =>
-            item.day === currentDayMonth && item.time < timeString ? (item.isPast = true) : item,
-          );
-          setAllEvents(newData);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    fetchEvents();
-  }, []);
+  const currentDate = moment().format('DD.MM.YYYY');
+  const { deleteEvent } = useFetch({
+    urlEvents: `${host}/news`,
+    headers: { Accept: 'application/json, text/plain, */*', 'Content-Type': 'application/json' },
+  });
 
   //получение всех ивентов для выбранного дня
   useEffect(() => {
-    setCurrentEvents(allEvents.filter((item) => item.day.trim() === selectedDay.trim()));
+    setCurrentEvents(allEvents.filter((item) => item.date.trim() === selectedDay.trim()));
+    console.log('allEvents: ', allEvents);
+    console.log('users: ', users);
   }, [selectedDay, allEvents]);
 
-  //проверка совпадает ли время какого-либо события с текущим временем
+  //проверка совпадает ли время какого-либо ивента с текущим временем
   useEffect(() => {
     const timeInterval = setInterval(async () => {
       let date = new Date();
       let timeString = date.toLocaleTimeString();
       // eslint-disable-next-line
       allEvents.map((event) => {
-        if (event.time === timeString) {
+        if (event.date === currentDate && event.time === timeString) {
           setEventNow(event);
           setAllEvents(
             allEvents.map((obj) => (obj.id === event.id ? { ...obj, isPast: true } : obj)),
@@ -85,9 +70,9 @@ const Events = ({ selectedDay, userName, userLogin, users }) => {
   }, [currentEvents]);
 
   //обработчик удаления ивента
-  const deleteEvent = async (id) => {
-    await axios.delete(`${host}/news/${id}`);
-    setCurrentEvents(currentEvents.filter((item) => item.id !== id));
+  const delEvent = async (id) => {
+    await deleteEvent(id);
+    setAllEvents(allEvents.filter((item) => Number(item.id) !== Number(id)));
   };
 
   //обработчик открытия модалки
@@ -139,7 +124,7 @@ const Events = ({ selectedDay, userName, userLogin, users }) => {
                                 item.isPast ? 'events__list-item past' : 'events__list-item'
                               }
                             >
-                              {item.event}
+                              {item.event}, время: {item.time}
                               {showBtns &&
                               Number(item.id) === Number(hoverCurEvent) &&
                               userName === user.username ? (
@@ -170,7 +155,7 @@ const Events = ({ selectedDay, userName, userLogin, users }) => {
                                   ) : null}
 
                                   <button
-                                    onClick={() => deleteEvent(item.id)}
+                                    onClick={() => delEvent(item.id)}
                                     className="events__list-del events-btn"
                                   >
                                     <svg

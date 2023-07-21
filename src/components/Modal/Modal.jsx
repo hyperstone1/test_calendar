@@ -3,10 +3,11 @@ import { TimePicker } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import { generateId } from '../../utils/generateId';
-import axios from 'axios';
 import { host } from '../../constants/constants';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import moment from 'moment';
+import useFetch from '../../hooks/useFetch';
 dayjs.extend(customParseFormat);
 
 const Modal = ({
@@ -20,11 +21,23 @@ const Modal = ({
   selectedDay,
   newEvent,
   setNewEvent,
-  setAllEvents,
   allEvents,
+  setAllEvents,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const refModal = useRef(null);
+  const { appendEvent, putEvent, data} = useFetch({
+    urlEvents: `${host}/news`,
+    headers: { Accept: 'application/json, text/plain, */*', 'Content-Type': 'application/json' },
+    curEditEvent,
+    body: {
+      username: userName,
+      login: userLogin,
+      event: newEvent,
+      date: selectedDay,
+      time,
+    },
+  });
 
   //закрытие модального окна
   const onModalClose = () => {
@@ -50,42 +63,29 @@ const Modal = ({
     let idEvent = generateId();
     let date = new Date();
     let timeString = date.toLocaleTimeString();
-
-    console.log(time, timeString);
-    if (time < timeString) {
+    let isCurDate = selectedDay === moment().clone().format('DD.MM.YYYY');
+    if (time < timeString && isCurDate) {
       alert('Введенное вами время уже прошло');
       setIsLoading(false);
     } else {
       if (curEditEvent) {
-        await axios.put(`${host}/news/${curEditEvent}`, {
-          event: newEvent,
-          time,
-        });
+        await putEvent();
         setAllEvents(
           allEvents.map((obj) =>
-            obj.id === curEditEvent
-              ? { ...obj, idEvent: idEvent, event: newEvent, time: time }
-              : obj,
+            obj.id === curEditEvent ? { ...obj, event: newEvent, time: time } : obj,
           ),
         );
       } else {
-        const { data } = await axios.post(`${host}/news`, {
-          idEvent,
-          username: userName,
-          login: userLogin,
-          event: newEvent,
-          day: selectedDay,
-          time,
-        });
+        const dataId = await appendEvent();
         setAllEvents([
           ...allEvents,
           {
-            id: data.id,
+            id: dataId.id,
             idEvent,
             username: userName,
             login: userLogin,
             event: newEvent,
-            day: selectedDay,
+            date: selectedDay,
             time,
           },
         ]);

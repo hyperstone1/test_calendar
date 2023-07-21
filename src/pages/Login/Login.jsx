@@ -4,43 +4,45 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { host } from '../../constants/constants';
 import './index.scss';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../store/slices/auth/authSlice';
+import useFetch from '../../hooks/useFetch';
 
-const Login = ({ isAuth, setIsAuth }) => {
+const Login = () => {
   const [pass, setPass] = useState();
   const [login, setLogin] = useState();
-  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isAuth) {
-      navigate('/');
-    }
+  const { getUsers, usersData } = useFetch({
+    headers: { Accept: 'application/json, text/plain, */*', 'Content-Type': 'application/json' },
+    urlUsers: `${host}/itemsTest`,
+    urlEvents: `${host}/news`,
+  });
 
-    console.log('isAuth: ', isAuth);
-  }, [isAuth]);
-
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-    const userExist = users.find((user) => user.login === login && user.pass === pass);
-    if (userExist) {
-      setIsAuth(true);
-      localStorage.setItem('isAuth', true);
-      localStorage.setItem('user', userExist.username);
-      localStorage.setItem('login', login);
-    } else {
-      setIsAuth(false);
-      alert('Пользователя с таким логином и паролем не существует');
-    }
-  };
-
+  //отправляем запрос на получение юзеров
   useEffect(() => {
     const fetchUsers = async () => {
-      const { data } = await axios.get(`${host}/itemsTest`);
-      setUsers(data);
+      await getUsers();
     };
     fetchUsers();
   }, []);
+
+  const onFinish = (values) => {
+    console.log('usersData: ', usersData);
+    const userExist = usersData.find((user) => user.login === login && user.pass === pass);
+    if (userExist) {
+      dispatch(setUser({ isAuth: true, login: userExist.login, password: userExist.password }));
+
+      localStorage.setItem('isAuth', true);
+      localStorage.setItem('user', userExist.username);
+      localStorage.setItem('login', login);
+      navigate('/');
+    } else {
+      alert('Пользователя с таким логином и паролем не существует');
+    }
+  };
 
   return (
     <div className="container__login">

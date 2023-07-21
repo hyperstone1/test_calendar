@@ -106,3 +106,22 @@ button[type='submit'] {
   font-size: 2rem;
   height: 4.4rem;
 }
+::-webkit-scrollbar {
+  height: 0.8rem; /* Высота полосы прокрутки */
+  width: 0.4rem;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Цвет фона полосы прокрутки */
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5474; /* Цвет полосы прокрутки */
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Цвет полосы прокрутки при наведении */
+}

@@ -1,22 +1,34 @@
 import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { host } from '../../constants/constants';
+import { setUser } from '../../store/slices/auth/authSlice';
+import { useDispatch } from 'react-redux';
+import useFetch from '../../hooks/useFetch';
 
-const Register = ({ setIsAuth }) => {
+const Register = () => {
   const [userName, setUserName] = useState();
   const [pass, setPass] = useState();
   const [login, setLogin] = useState();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const { appendUsers } = useFetch({
+    urlUsers: `${host}/itemsTest`,
+    headers: { Accept: 'application/json, text/plain, */*', 'Content-Type': 'application/json' },
+    body: {
+      username: userName,
+      login,
+      pass,
+    },
+  });
 
   const onFinish = async (values) => {
     console.log('Received values of form: ', values);
-    const { data } = await axios.post(`${host}/itemsTest`, { username: userName, login, pass });
+    appendUsers();
     alert('успешно зарегистрирован');
-    setIsAuth(true);
+    dispatch(setUser({ isAuth: true, username: userName, login, password: pass }));
     localStorage.setItem('isAuth', true);
     localStorage.setItem('user', userName);
     localStorage.setItem('login', login);

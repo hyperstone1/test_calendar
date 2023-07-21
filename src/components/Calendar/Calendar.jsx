@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import 'moment/locale/ru';
 import './index.scss';
-import axios from 'axios';
-import { host } from '../../constants/constants';
+import { parseDate } from '../../utils/parseDate';
 
-const Calendar = ({ setSelectedDay }) => {
+const Calendar = ({ allEvents, setSelectedDay, selectedDay }) => {
   const [currentMonth, setCurrentMonth] = useState(moment().locale('ru'));
   const [calendar, setCalendar] = useState([]);
+  const [calendarWithEvents, setCalendarWithEvents] = useState([]);
   const refMonth = useRef(null);
+  const currentDay = moment().format('DD.MM.YYYY');
 
   //обработчик предыдущий на следующий месяц
   const previousMonth = () => {
@@ -20,8 +21,22 @@ const Calendar = ({ setSelectedDay }) => {
   };
 
   useEffect(() => {
-    console.log(currentMonth);
-  }, [currentMonth]);
+    let newCalendar = calendar.reduce((result, item) => {
+      const matchingEvents = allEvents.filter((event) => event.date === item.date);
+      if (matchingEvents.length > 0) {
+        item.isEventsExist = true;
+        item.events = matchingEvents.map((event) => ({
+          userName: event.username,
+          event: event.event,
+          time: event.time,
+        }));
+      }
+      result.push(item);
+      return result;
+    }, []);
+    setCalendarWithEvents(newCalendar);
+  }, [allEvents, calendar]);
+
   // функция рендера дней календаря
   const renderCalendar = () => {
     const monthStart = currentMonth.clone().startOf('month').startOf('week');
@@ -41,9 +56,11 @@ const Calendar = ({ setSelectedDay }) => {
 
       calendarLoc.push({
         day: currentDate.format('D'),
-        date: currentDate.format('DD MMMM'),
+        date: currentDate.format('DD.MM.YYYY'),
         dateKey: currentDate.format('YYYY-MM-DD'),
         classNames,
+        events: [],
+        isEventsExist: false,
       });
 
       currentDate.add(1, 'day');
@@ -54,13 +71,13 @@ const Calendar = ({ setSelectedDay }) => {
   // вызывыаем функция рендера
   useEffect(() => {
     renderCalendar();
+    console.log(allEvents);
     //eslint-disable-next-line
   }, [currentMonth]);
 
   //обработчик клика на день
   const onClickDay = async (item) => {
     setSelectedDay(item.date.trim());
-    await axios.get(`${host}/news`);
   };
 
   return (
@@ -86,13 +103,22 @@ const Calendar = ({ setSelectedDay }) => {
             <div className="calendar__week-day">Вс</div>
           </div>
           <div className="calendar__days">
-            {calendar.map((item) => (
+            {calendarWithEvents.map((item) => (
               <div
                 key={item.dateKey}
                 className={item.classNames.join(' ')}
                 onClick={() => onClickDay(item)}
               >
                 <span className="date">{item.day}</span>
+                {parseDate(item.date) >= parseDate(currentDay) && item.events ? (
+                  <ul className="calendar__days-events">
+                    {item.events.map((event, id) => (
+                      <li key={id} className="calendar__days-event">
+                        {event.event}, user: <b>{event.userName}</b>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
             ))}
           </div>
