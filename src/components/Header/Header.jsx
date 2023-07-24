@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.scss';
-import HeaderBtn from '../../UI/HeaderBtn';
+import BtnExit from '../UI/BtnExit';
 import logo from '../../logo.svg';
 
 const Header = () => {
@@ -16,7 +16,7 @@ const Header = () => {
           </div>
         </div>
         <div className="header__buttons">
-          <HeaderBtn />
+          <BtnExit />
         </div>
       </div>
     </header>

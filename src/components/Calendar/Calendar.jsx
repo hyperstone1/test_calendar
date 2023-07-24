@@ -34,6 +34,7 @@ const Calendar = ({ allEvents, setSelectedDay, selectedDay }) => {
       result.push(item);
       return result;
     }, []);
+
     setCalendarWithEvents(newCalendar);
   }, [allEvents, calendar]);
 
@@ -71,9 +72,8 @@ const Calendar = ({ allEvents, setSelectedDay, selectedDay }) => {
   // вызывыаем функция рендера
   useEffect(() => {
     renderCalendar();
-    console.log(allEvents);
     //eslint-disable-next-line
-  }, [currentMonth]);
+  }, [currentMonth, allEvents]);
 
   //обработчик клика на день
   const onClickDay = async (item) => {

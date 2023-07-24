@@ -1,6 +1,5 @@
 import React from 'react';
-import './index.scss';
-import { logout } from '../store/slices/auth/authSlice';
+import { logout } from '../../store/slices/auth/authSlice';
 import { useDispatch } from 'react-redux';
 
 const HeaderBtn = () => {
